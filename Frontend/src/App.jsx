@@ -105,7 +105,7 @@ const Home = () => {
                 time and ensuring consistency across your projects.
               </span>
               <img
-                src="/public/img1.png" 
+                src="/img1.png" 
                 alt="Document Editing"
                 className="w-48 h-36 rounded-lg shadow-lg ml-auto"
               />
@@ -120,7 +120,7 @@ const Home = () => {
                 devices, providing flexibility and accessibility for your team.
               </span>
               <img
-                src="/public/img2.png" 
+                src="/img2.png" 
                 alt="Chat Feature"
                 className="w-48 h-36 rounded-lg shadow-lg ml-auto"
               />
