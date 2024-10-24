@@ -4,6 +4,7 @@ const socketIo = require("socket.io");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const path = require('path');
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: "../.env" });
 const app = express();
@@ -29,7 +30,7 @@ const io = socketIo(server, {
     credentials: true,
   },
 });
-
+app.use(express.static(path.join(__dirname, '../Frontend/dist')));
 app.use(express.json()); 
 app.use(
   cors({

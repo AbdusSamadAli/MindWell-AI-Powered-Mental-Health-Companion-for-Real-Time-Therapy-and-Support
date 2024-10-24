@@ -120,7 +120,7 @@ const Home = () => {
                 devices, providing flexibility and accessibility for your team.
               </span>
               <img
-                src="/img2.png" 
+                src="`/img2.png" 
                 alt="Chat Feature"
                 className="w-48 h-36 rounded-lg shadow-lg ml-auto"
               />
