@@ -19,14 +19,14 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "/login",
+        "http://localhost:8080/login",
         formData
       );
       setMessage("Login successful!");
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userId", response.data.userId);
       const usernameResponse = await axios.get(
-        `/api/user/${response.data.userId}`,
+        `http://localhost:8080/api/user/${response.data.userId}`,
         {
           headers: { Authorization: `Bearer ${response.data.token}` },
         }

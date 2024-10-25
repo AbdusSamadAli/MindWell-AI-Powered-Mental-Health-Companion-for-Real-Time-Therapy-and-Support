@@ -24,7 +24,7 @@ export default function TextEditor() {
   const [error, setError] = useState(null);
   
   useEffect(() => {
-    const s = io("/", {
+    const s = io("http://localhost:8080", {
       query: { documentId }, 
     });
     setSocket(s);
