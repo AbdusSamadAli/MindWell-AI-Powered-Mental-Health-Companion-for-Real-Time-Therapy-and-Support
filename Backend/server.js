@@ -30,8 +30,8 @@ const io = socketIo(server, {
     credentials: true,
   },
 });
-app.use(express.static(path.join(__dirname, '../Frontend/dist')));
 app.use(express.json()); 
+app.use(express.static(path.join(__dirname, '../Frontend/dist')));
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -306,7 +306,9 @@ io.on("connection", (socket) => {
     }
   });
 });
-
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../Frontend/dist/index.html'));
+});
 const PORT = 8080;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
