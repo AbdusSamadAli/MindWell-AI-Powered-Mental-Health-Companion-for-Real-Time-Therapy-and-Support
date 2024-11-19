@@ -8,7 +8,13 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const app = express();
 const server = http.createServer(app);
+const path = require("path");
 const defaultValue = "<p>Initial content goes here...</p>";
+
+app.use(express.json());
+const _dirname = path.dirname("");
+const buildpath = path.join(_dirname,"../Frontend/dist");
+app.use(express.static(buildpath));
 async function findOrCreateDocument(documentId) {
   try {
     let document = await Document.findById(documentId); 
@@ -24,7 +30,7 @@ async function findOrCreateDocument(documentId) {
 
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -33,7 +39,7 @@ const io = socketIo(server, {
 app.use(express.json()); 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
   })
