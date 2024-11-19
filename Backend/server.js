@@ -15,6 +15,9 @@ app.use(express.json());
 const _dirname = path.dirname("");
 const buildpath = path.join(_dirname,"../Frontend/dist");
 app.use(express.static(buildpath));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(buildPath, "index.html"));
+});
 async function findOrCreateDocument(documentId) {
   try {
     let document = await Document.findById(documentId); 
