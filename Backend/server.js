@@ -87,9 +87,6 @@ const authenticateJWT = (req, res, next) => {
     res.sendStatus(401);
   }
 };
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
 app.get("/api/users", authenticateJWT, async (req, res) => {
   try {
     const users = await UserModel.find({}, { password: 0 }); 
