@@ -204,7 +204,6 @@ app.post("/api/documents", authenticateJWT, async (req, res) => {
   }
 });
 const userSocketMap = {};
-app.use(cors());
 
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
