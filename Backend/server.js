@@ -12,9 +12,8 @@ const path = require("path");
 const defaultValue = "<p>Initial content goes here...</p>";
 
 app.use(express.json());
-const _dirname = path.dirname("");
-const buildpath = path.join(_dirname,"../Frontend/dist");
-app.use(express.static(buildpath));
+const buildPath = path.join(__dirname, "../Frontend/dist");
+app.use(express.static(buildPath));
 app.get("*", (req, res) => {
   res.sendFile(path.join(buildPath, "index.html"));
 });
@@ -39,7 +38,6 @@ const io = socketIo(server, {
   },
 });
 
-app.use(express.json()); 
 app.use(
   cors({
     origin: "*",
