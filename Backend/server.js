@@ -5,7 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config();
 const app = express();
 const server = http.createServer(app);
 const defaultValue = "<p>Initial content goes here...</p>";
