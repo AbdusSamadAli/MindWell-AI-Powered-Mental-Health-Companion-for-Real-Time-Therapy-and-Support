@@ -5,18 +5,14 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const path = require('path');
 require("dotenv").config();
 const app = express();
 const server = http.createServer(app);
-const path = require("path");
-const defaultValue = "<p>Initial content goes here...</p>";
-
 app.use(express.json());
-const buildPath = path.join(__dirname, "../Frontend/dist");
-app.use(express.static(buildPath));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(buildPath, "index.html"));
-});
+const frontendPath = path.join(__dirname, '../Frontend/dist');
+app.use(express.static(frontendPath));
+
 async function findOrCreateDocument(documentId) {
   try {
     let document = await Document.findById(documentId); 
@@ -308,7 +304,9 @@ io.on("connection", (socket) => {
     }
   });
 });
-
+app.get('*', (req, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html'));
+});
 const PORT = 8080;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
