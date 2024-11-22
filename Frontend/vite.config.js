@@ -1,16 +1,19 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Define Vite config
 export default defineConfig({
   plugins: [react()],
   build: {
-    // Adjust the output directory if needed
-    outDir: '../Backend/dist', // Ensures built files go to Backend/dist
-    emptyOutDir: true, // Ensures the output directory is cleaned before each build
+    outDir: '../Backend/dist', // Builds go into Backend/dist
+    emptyOutDir: true, // Cleans the dist folder before each build
   },
+  base: './', // Ensures relative asset paths for deployment
   server: {
-    port: 5173, // Keeps the Vite dev server running on port 517
+    port: 5173, // Vite dev server port
+    proxy: {
+      '/api': 'http://localhost:8080', // Proxy API calls to the backend
+    },
   },
 });
+
 
