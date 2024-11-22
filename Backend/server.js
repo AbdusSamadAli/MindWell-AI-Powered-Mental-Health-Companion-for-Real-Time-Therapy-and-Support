@@ -304,8 +304,8 @@ io.on("connection", (socket) => {
     }
   });
 });
-app.get('*', (req, res) => {
-  res.sendFile(path.join(frontendPath, 'index.html'));
+app.get('*', (_, res) => {
+  res.sendFile(path.join(frontendPath, 'index.html')); 
 });
 const PORT = 8080;
 server.listen(PORT, () => {
