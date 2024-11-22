@@ -4,9 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node backend/server.js",
+    "dev": "node Backend/server.js",
     "build": "npm install && npm install --prefix Frontend && npm run build --prefix Frontend",
-    "start": "node backend/server.js",
+    "start": "node Backend/server.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
