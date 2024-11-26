@@ -308,6 +308,6 @@ app.get('*', (_, res) => {
   res.sendFile(path.resolve(frontendPath, 'index.html'));
 });
 const PORT = 8080;
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
