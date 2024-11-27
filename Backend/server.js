@@ -29,7 +29,7 @@ async function findOrCreateDocument(documentId) {
 const io = socketIo(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST","PUT"],
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
