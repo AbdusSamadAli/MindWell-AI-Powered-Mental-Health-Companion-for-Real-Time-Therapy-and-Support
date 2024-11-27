@@ -28,7 +28,7 @@ async function findOrCreateDocument(documentId) {
 
 const io = socketIo(server, {
   cors: {
-    origin: "*",
+    origin: "http://52.66.240.17:8080",
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -36,7 +36,7 @@ const io = socketIo(server, {
 
 app.use(
   cors({
-    origin: "*",
+    origin: "http://52.66.240.17:8080",
     methods: ["GET", "POST"],
     credentials: true,
   })
