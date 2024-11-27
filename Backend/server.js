@@ -29,7 +29,7 @@ async function findOrCreateDocument(documentId) {
 const io = socketIo(server, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST","PUT", "DELETE"],
+    methods: ["GET", "POST","PUT"],
     credentials: true,
   },
 });
@@ -37,7 +37,7 @@ const io = socketIo(server, {
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST"],
     credentials: true,
   })
 );
@@ -308,6 +308,6 @@ app.get('*', (_, res) => {
   res.sendFile(path.resolve(frontendPath, 'index.html'));
 });
 const PORT = 8080;
-server.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT,() => {
   console.log(`Server is running on port ${PORT}`);
 });
