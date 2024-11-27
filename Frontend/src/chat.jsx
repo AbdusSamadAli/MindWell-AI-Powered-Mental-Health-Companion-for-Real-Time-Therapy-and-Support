@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
 import { Link } from "react-router-dom";
-const socket = io("http://52.66.240.17:8080", {
+const socket = io("http://localhost:8080", {
   transports: ["websocket"],
   withCredentials: true,
 });
@@ -16,7 +16,7 @@ const Chat = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://52.66.240.17:8080/api/users", {
+        const response = await axios.get("http://localhost:8080/api/users", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setUsers(response.data);
@@ -27,7 +27,7 @@ const Chat = () => {
 
     const fetchMessages = async () => {
       try {
-        const response = await axios.get("http://52.66.240.17:8080/api/messages", {
+        const response = await axios.get("http://localhost:8080/api/messages", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setMessages(response.data);
