@@ -36,7 +36,7 @@ const io = socketIo(server, {
 
 app.use(
   cors({
-    origin: "http://52.66.240.17:8080",
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
