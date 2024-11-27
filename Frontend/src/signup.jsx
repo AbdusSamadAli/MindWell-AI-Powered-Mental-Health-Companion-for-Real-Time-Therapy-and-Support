@@ -22,7 +22,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/signup",
+        "http://52.66.240.17:8080/api/signup",
         formData
       );
       setMessage(response.data.message); 
