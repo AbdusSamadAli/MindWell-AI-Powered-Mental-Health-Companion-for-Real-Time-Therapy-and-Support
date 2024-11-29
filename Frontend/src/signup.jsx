@@ -22,7 +22,7 @@ const Signup = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/signup",
+        "https://collabsync-real-time-collaboration-and-ahxb.onrender.com/api/signup",
         formData
       );
       setMessage(response.data.message); 
