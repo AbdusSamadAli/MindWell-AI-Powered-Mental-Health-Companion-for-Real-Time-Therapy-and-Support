@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import axios from "axios";
 import { Link } from "react-router-dom";
-const socket = io("http://localhost:8080", {
+const socket = io("https://collabsync-real-time-collaboration-and-ahxb.onrender.com", {
   transports: ["websocket"],
   withCredentials: true,
 });

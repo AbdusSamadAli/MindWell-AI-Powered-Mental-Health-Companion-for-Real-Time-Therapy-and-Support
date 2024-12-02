@@ -114,16 +114,11 @@ const Home = () => {
               <span className="mr-6">
                 💬 <strong className="text-xl">Integrated Chat Room:</strong>
                 <br />
-                Engage in discussions with your team members in real time.
+                Engage in ~discussions with your team members in real time.
                 <br />
                 Use our tools seamlessly across desktop, tablet, and mobile
                 devices, providing flexibility and accessibility for your team.
               </span>
-              <img
-                src="`/img2.png" 
-                alt="Chat Feature"
-                className="w-48 h-36 rounded-lg shadow-lg ml-auto"
-              />
             </li>
           </ul>
         </div>
@@ -246,8 +241,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {/* Footer Section */}
       <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-6 mt-4">
         <div className="max-w-6xl mx-auto text-center">
           <p className="mb-2">
