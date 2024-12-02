@@ -19,14 +19,14 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/login",
+        "https://collabsync-real-time-collaboration-and-ahxb.onrender.com/login",
         formData
       );
       setMessage("Login successful!");
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userId", response.data.userId);
       const usernameResponse = await axios.get(
-        `http://localhost:8080/api/user/${response.data.userId}`,
+        `https://collabsync-real-time-collaboration-and-ahxb.onrender.com/api/user/${response.data.userId}`,
         {
           headers: { Authorization: `Bearer ${response.data.token}` },
         }

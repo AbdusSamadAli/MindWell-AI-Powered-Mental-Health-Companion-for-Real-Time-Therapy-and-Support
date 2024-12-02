@@ -16,7 +16,7 @@ const Chat = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get("http://localhost:8080//api/users", {
+        const response = await axios.get("https://collabsync-real-time-collaboration-and-ahxb.onrender.com/api/users", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setUsers(response.data);
@@ -27,7 +27,7 @@ const Chat = () => {
 
     const fetchMessages = async () => {
       try {
-        const response = await axios.get("http://localhost:8080//api/messages", {
+        const response = await axios.get("https://collabsync-real-time-collaboration-and-ahxb.onrender.com/api/messages", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setMessages(response.data);
