@@ -12,4 +12,4 @@ Node.js: Runtime environment for the backend server.
 Socket.IO: For real-time, event-based communication.
 JWT (JSON Web Tokens): For user authentication.
 
-![image]("../my-app/Frontend/public/img1.jpg")
+![alt text](./Frontend/imgs/image.png)
