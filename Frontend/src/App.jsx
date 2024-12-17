@@ -181,8 +181,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {/* How It Works Section */}
       <div className="bg-gradient-to-r from-yellow-300 to-orange-400 shadow-lg rounded-lg p-8 w-full mx-auto mt-10">
         <h2 className="text-4xl font-semibold text-gray-800 text-center mb-6">
           How It Works
