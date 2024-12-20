@@ -104,11 +104,6 @@ const Home = () => {
                 Utilize pre-built templates for various document types, saving
                 time and ensuring consistency across your projects.
               </span>
-              <img
-                src="/img1.png" 
-                alt="Document Editing"
-                className="w-48 h-36 rounded-lg shadow-lg ml-auto"
-              />
             </li>
             <li className="flex items-start text-gray-600 mb-6">
               <span className="mr-6">
