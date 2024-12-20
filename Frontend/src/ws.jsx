@@ -24,7 +24,7 @@ export default function TextEditor() {
   const [error, setError] = useState(null);
   
   useEffect(() => {
-    const s = io("https://collabsync-real-time-collaboration-and-ahxb.onrender.com", {
+    const s = io("https://13.235.82.182:8080/", {
       query: { documentId }, 
     });
     setSocket(s);
