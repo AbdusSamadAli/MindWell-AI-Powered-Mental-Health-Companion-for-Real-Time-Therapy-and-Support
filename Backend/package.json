@@ -4,15 +4,15 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd Frontend && npm run build",  
-    "start": "node Backend/server.js" 
+    "build": "cd Frontend && npm run build",
+    "start": "node Backend/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "quill": "^2.0.3",
     "ws": "^8.18.0"
-    
   }
 }

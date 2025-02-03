@@ -12,16 +12,10 @@ const Navbar = ({ documentId }) => {
   return (
     <nav className="bg-gray-900 p-4 shadow-lg">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="text-white text-2xl font-bold">CollabSync</div>
+        <Link to="/" className="text-white text-2xl font-bold">
+        <h1 className="text-white text-2xl font-bold">CollabSync</h1>
+        </Link>
         <ul className="flex space-x-6">
-          <li>
-            <Link
-              to="/"
-              className="text-gray-300 hover:text-white hover:underline transition duration-300 ease-in-out"
-            >
-              Home
-            </Link>
-          </li>
           {documentId && (
             <li>
               <Link

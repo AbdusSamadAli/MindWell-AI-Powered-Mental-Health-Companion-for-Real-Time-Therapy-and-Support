@@ -1,40 +1,36 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [message, setMessage] = useState("");
-  const navigate = useNavigate(); 
-  const location = useLocation(); 
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
 
     try {
       const response = await axios.post(
-        "https://13.235.82.182:8080//login",
+        "http://localhost:8080/api/auth/login",
         formData
       );
       setMessage("Login successful!");
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("userId", response.data.userId);
-      const usernameResponse = await axios.get(
-        `https://13.235.82.182:8080/api/user/${response.data.userId}`,
-        {
-          headers: { Authorization: `Bearer ${response.data.token}` },
-        }
-      );
 
-      localStorage.setItem("username", usernameResponse.data.username); 
-      const redirectPath = location.state?.from?.pathname || "/"; 
-      navigate(redirectPath);
+      const redirectPath = location.state?.from || "/"; 
+      navigate(redirectPath); // Navigate to the page stored in redirectPath
     } catch (error) {
       setMessage(error.response?.data?.message || "Something went wrong");
     }
