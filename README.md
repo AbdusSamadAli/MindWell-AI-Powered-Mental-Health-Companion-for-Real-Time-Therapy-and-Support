@@ -1,3 +1,5 @@
+![alt text](./Frontend/public/ss.jpg)
+
 CollabSync: Real-Time Collaboration and Communication Platform
 Features :
 Real-Time Chat Room: Users can join a chat room, send messages, and receive them in real-time without page refreshes.
@@ -11,5 +13,3 @@ React.js: Frontend framework to build the user interface.
 Node.js: Runtime environment for the backend server.
 Socket.IO: For real-time, event-based communication.
 JWT (JSON Web Tokens): For user authentication.
-
-![alt text](./Frontend/public/ss.jpg)
