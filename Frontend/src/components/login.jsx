@@ -10,7 +10,7 @@ const Login = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -25,19 +25,25 @@ const Login = () => {
         "http://localhost:8080/api/auth/login",
         formData
       );
-      setMessage("Login successful!");
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("userId", response.data.userId);
 
-      const redirectPath = location.state?.from || "/"; 
-      navigate(redirectPath); // Navigate to the page stored in redirectPath
+      const { token, userId, role } = response.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("role", role);
+
+      setMessage("Login successful!");
+
+      // Redirect logic
+      const redirectPath = location.state?.from || (role === "doctor" ? "/doctordashboard" : "/patientdashboard");
+      navigate(redirectPath);
     } catch (error) {
       setMessage(error.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Login

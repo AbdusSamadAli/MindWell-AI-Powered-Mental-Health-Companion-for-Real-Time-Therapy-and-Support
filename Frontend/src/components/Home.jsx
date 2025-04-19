@@ -1,211 +1,183 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 const Home = () => {
-    console.log("Home component rendering");
-    const [openIndex, setOpenIndex] = useState(null); 
-  
-    const faqs = [
-      {
-        question: "How does the chat room work?",
-        answer:
-          "Our integrated chat room uses WebSocket technology to facilitate real-time communication. This ensures that messages are delivered instantly, allowing team members to engage in seamless discussions without any delays.",
-      },
-      {
-        question: "Can multiple users edit documents at the same time?",
-        answer:
-          "Yes! Our platform allows multiple users to co-edit documents simultaneously. Changes made by one user are instantly reflected for all others, ensuring everyone stays updated in real-time and avoiding version conflicts.",
-      },
-      {
-        question: "Do only authenticated users have access to the chat room?",
-        answer:
-          "Yes, only authenticated users can access the chat room. To ensure a secure and collaborative environment, users must log in to participate in discussions, fostering effective communication among team members.",
-      },
-    ];
-  
-    const toggleFAQ = (index) => {
-      setOpenIndex(openIndex === index ? null : index); 
-    };
-    return (
-      <div className="bg-gray-100 min-h-screen flex flex-col">
-        <div className="bg-gradient-to-r from-gray-300 via-purple-400 to-indigo-500 text-black py-10 flex flex-col justify-center items-center text-center w-full">
-          <h1 className="text-5xl font-bold mb-4">
-            Unlock Your Team Potential With CollabSync
-          </h1>
-          <p className="text-lg mb-6">
-            Collaborate seamlessly and enhance productivity with our integrated
-            tools.
-          </p>
-          <p className="text-md mb-4">
-            Ever struggled to keep everyone on the same page during a project for
-            Remote Collaboration?
-            <br />
-            With CollabSync, you can say goodbye to confusion and hello to clear
-            communication and efficient workflows.
-          </p>
-  
-          <p className="text-md">
-            Our powerful **Document Editing** and **Real-Time Chat** features
-            ensure your team stays aligned and productive.
-          </p>
-        </div>
-        <div className="flex flex-col md:flex-row w-full mx-auto mt-10">
-          <div className="bg-gradient-to-r from-yellow-300 to-orange-400 shadow-lg rounded-lg p-8 w-full md:w-1/2">
-            <h2 className="text-4xl font-semibold text-gray-800 text-center mb-6">
-              Features
-            </h2>
-            <ul className="list-disc list-inside mb-6 text-lg">
-              <li className="flex items-start text-gray-600 mb-6">
-                <span className="mr-6">
-                  ✨{" "}
-                  <strong className="text-xl">
-                    Real-Time Document Co-Editing:
-                  </strong>
-                  <br />
-                  Collaborate on documents without version conflicts, seeing
-                  changes instantly with multiple logged in users editing the same document.
-                  <br />
-                  Utilize pre-built templates for various document types, saving
-                  time and ensuring consistency across your projects.
-                </span>
-              </li>
-              <li className="flex items-start text-gray-600 mb-6">
-                <span className="mr-6">
-                  💬 <strong className="text-xl">Integrated Chat Room:</strong>
-                  <br />
-                  Engage in ~discussions with your team members in real time.
-                  <br />
-                  Use our tools seamlessly across desktop, tablet, and mobile
-                  devices, providing flexibility and accessibility for your team.
-                </span>
-              </li>
-            </ul>
-          </div>
-          <div className="bg-gradient-to-r from-yellow-300 to-orange-400 shadow-lg rounded-lg p-6 w-full md:w-1/2 mt-6 md:mt-0 md:ml-4">
-            <h2 className="text-4xl font-semibold text-gray-800 text-center mb-6">
-              FAQs
-            </h2>
-            <ul className="list-none mb-6 text-lg">
-              {" "}
-              {faqs.map((faq, index) => (
-                <li key={index} className="text-gray-600 mb-4">
-                  <button
-                    onClick={() => toggleFAQ(index)} 
-                    className="w-full text-left focus:outline-none flex justify-between items-center"
-                  >
-                    <strong className="text-xl">
-                      {index + 1}. {faq.question}
-                    </strong>
-                    <span>{openIndex === index ? "-" : "+"}</span>{" "}
-                  </button>
-                  {openIndex === index && ( 
-                    <div className="mt-2">{faq.answer}</div>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-        <div className="bg-gradient-to-r from-gray-300 via-purple-400 to-indigo-500 rounded-lg p-8 w-full mx-auto mt-10">
-          <h2 className="text-4xl font-semibold text-gray-800 text-center mb-6">
-            Why Choose CollabSync?
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:bg-blue-100 transition-transform duration-300 ease-in-out hover:-translate-y-2">
-              <h3 className="text-2xl font-semibold mb-2 text-blue-600">
-                Seamless Collaboration
-              </h3>
-              <p className="text-gray-600">
-                Work together with your team in real-time, with zero lags or
-                version conflicts.
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:bg-green-100 transition-transform duration-300 ease-in-out hover:-translate-y-2">
-              <h3 className="text-2xl font-semibold mb-2 text-green-600">
-                Secure & Private
-              </h3>
-              <p className="text-gray-600">
-                Your documents and communications are always protected with
-                end-to-end encryption.
-              </p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg hover:bg-purple-100 transition-transform duration-300 ease-in-out hover:-translate-y-2">
-              <h3 className="text-2xl font-semibold mb-2 text-purple-600">
-                Integrated Tools
-              </h3>
-              <p className="text-gray-600">
-                Built-in tools like document editing for multiple users and live
-                chat to supercharge productivity.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-gradient-to-r from-yellow-300 to-orange-400 shadow-lg rounded-lg p-8 w-full mx-auto mt-10">
-          <h2 className="text-4xl font-semibold text-gray-800 text-center mb-6">
-            How It Works
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-md hover:bg-blue-50 transition duration-300 ease-in-out hover:shadow-lg">
-              <h3 className="text-2xl font-semibold text-blue-600 mb-2">
-                1. Sign Up
-              </h3>
-              <p className="text-gray-600">
-                Create an account by signing up with your email to start
-                collaborating.
-              </p>
-              <button className="bg-blue-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 transition duration-300 ease-in-out">
-                Sign Up
-              </button>
-            </div>
-  
-            <div className="bg-white p-6 rounded-lg shadow-md hover:bg-green-50 transition duration-300 ease-in-out hover:shadow-lg">
-              <h3 className="text-2xl font-semibold text-green-600 mb-2">
-                2. Log In
-              </h3>
-              <p className="text-gray-600">
-                Access your account and your shared workspace with the team after
-                logging in.
-              </p>
-              <button className="bg-green-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 transition duration-300 ease-in-out">
-                Log In
-              </button>
-            </div>
-  
-            <div className="bg-white p-6 rounded-lg shadow-md hover:bg-purple-50 transition duration-300 ease-in-out hover:shadow-lg">
-              <h3 className="text-2xl font-semibold text-purple-600 mb-2">
-                3. Edit Documents
-              </h3>
-              <p className="text-gray-600">
-                Edit documents with your team in real time. Changes are synced
-                instantly.
-              </p>
-              <button className="bg-purple-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-purple-600 transition duration-300 ease-in-out">
-                Edit a Document
-              </button>
-            </div>
-  
-            <div className="bg-white p-6 rounded-lg shadow-md hover:bg-yellow-50 transition duration-300 ease-in-out hover:shadow-lg">
-              <h3 className="text-2xl font-semibold text-yellow-600 mb-2">
-                4. Chat in Real-Time
-              </h3>
-              <p className="text-gray-600">
-                Use the integrated chat feature to communicate with your team
-                while editing.
-              </p>
-              <button className="bg-yellow-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-yellow-600 transition duration-300 ease-in-out">
-                Chat with Team
-              </button>
-            </div>
-          </div>
-        </div>
-        <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-6 mt-4">
-          <div className="max-w-6xl mx-auto text-center">
-            <p className="mb-2">
-              &copy; {new Date().getFullYear()} CollabSync. All Rights Reserved.
-            </p>
-          </div>
-        </footer>
-      </div>
-    );
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const faqs = [
+    {
+      question: "How do I book a therapy appointment?",
+      answer:
+        "Simply sign up as a patient, log in, and navigate to the 'Book Appointment' section. Choose a therapist, pick your date and time, and receive confirmation instantly.",
+    },
+    {
+      question: "Can I attend sessions from my phone?",
+      answer:
+        "Yes, our platform is mobile-friendly, allowing you to attend secure therapy sessions from your smartphone, tablet, or desktop.",
+    },
+    {
+      question: "Are the therapy sessions confidential?",
+      answer:
+        "Yes, all therapy sessions are encrypted and conducted in a private and secure virtual room. We prioritize your mental health and privacy.",
+    },
+  ];
+
+  const toggleFAQ = (index) => {
+    setOpenIndex(openIndex === index ? null : index);
   };
-  
+
+  return (
+    <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="py-16 text-center max-w-4xl mx-auto"
+      >
+        <h1 className="text-5xl font-bold mb-4">
+          Heal Mindfully with MindWell
+        </h1>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="text-lg mb-6"
+        >
+          Your safe space for online therapy, anytime, anywhere.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="text-md mb-4"
+        >
+          Struggling with stress, anxiety, or emotional challenges? <br />
+          Let certified professionals guide you towards clarity and healing.
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+          className="text-md"
+        >
+          Book appointments, chat securely, and track your progress — all in one
+          platform.
+        </motion.p>
+      </motion.div>
+
+      <section className="py-16 rounded-lg shadow-md max-w-5xl mx-auto">
+        <h2 className="text-4xl font-semibold text-center mb-10">
+          Key Features
+        </h2>
+        <ul className="grid md:grid-cols-2 gap-8 text-lg">
+          {[
+            {
+              icon: "🧠",
+              title: "Online Therapy Sessions",
+              desc: "Connect with licensed therapists for private and personalized support from the comfort of your home.",
+            },
+            {
+              icon: "📅",
+              title: "Appointment Booking",
+              desc: "Easily book appointments with your preferred therapist at a time that works best for you.",
+            },
+            {
+              icon: "🔒",
+              title: "Secure Chat Rooms",
+              desc: "Once your session is booked, join a private, secure chat room with your therapist to discuss your progress.",
+            },
+            {
+              title: "Relaxing Video Calls",
+              desc: "Once your session is booked, you can also attend a video call meeting with your therapist to discuss your problems.",
+            },
+            {
+              icon: "🤖",
+              title: "AI Chatbot Support",
+              desc: "Talk to our AI-powered chatbot when your therapist is unavailable. Get immediate help with your emotional well-being.",
+            },
+            {
+              icon: "📝",
+              title: "Therapist Notes",
+              desc: "After every session, therapists add notes that help track your mental health journey.",
+            },
+          ].map((item, index) => (
+            <motion.li
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 1 + index * 0.2, duration: 0.5 }}
+              className="bg-gray-800 p-6 rounded-lg shadow hover:shadow-lg transition"
+            >
+              <span className="text-2xl">{item.icon}</span>
+              <h3 className="text-xl font-semibold mt-2">{item.title}</h3>
+              <p className="mt-2">{item.desc}</p>
+            </motion.li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="py-16 max-w-4xl mx-auto">
+        <h2 className="text-4xl font-semibold text-center mb-10">FAQs</h2>
+        <ul className="space-y-6 text-lg">
+          {faqs.map((faq, index) => (
+            <li key={index} className="border-b border-gray-600 pb-4">
+              <button
+                onClick={() => toggleFAQ(index)}
+                className="w-full text-left flex justify-between items-center"
+              >
+                <strong className="text-xl">
+                  {index + 1}. {faq.question}
+                </strong>
+                <span>{openIndex === index ? "−" : "+"}</span>
+              </button>
+              {openIndex === index && (
+                <p className="mt-2 text-white">{faq.answer}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="py-16 max-w-6xl mx-auto">
+        <h2 className="text-4xl font-semibold text-center mb-10">
+          How It Works
+        </h2>
+        <div className="grid md:grid-cols-4 gap-8">
+          {[
+           {
+            step: "1. Sign Up",
+            hover: "scale-150",
+            desc: "Choose whether you’re a patient or therapist, and create a secure account with your personal details.",
+          },
+          {
+            step: "2. Choose a Therapist",
+            hover: "scale-150",
+            desc: "Browse through licensed therapists and book an appointment with one that fits your needs.",
+          },
+          {
+            step: "3. Book Appointment",
+            hover: "scale-150",
+            desc: "Select your preferred date and time, and confirm your appointment.",
+          },
+          {
+            step: "4. Begin Therapy",
+            hover: "scale-150",
+            desc: "Join a secure virtual session and begin your therapy journey with confidence.",
+          },
+          ].map((step, i) => (
+            <div
+              key={i}
+              className={`p-6 rounded-lg shadow-md hover:bg-${step.hover} transition duration-300 ease-in-out hover:shadow-lg`}
+            >
+              <h3 className={`text-2xl font-semibold mb-2 text-${step.color}`}>
+                {step.step}
+              </h3>
+              <p>{step.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+};
+
 export default Home;
-  

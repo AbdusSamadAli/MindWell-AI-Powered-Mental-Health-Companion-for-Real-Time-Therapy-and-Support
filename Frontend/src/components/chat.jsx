@@ -1,228 +1,125 @@
-import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-import axios from "axios";
-
-const socket = io("http://localhost:8080", {
-  transports: ["websocket"],
-  withCredentials: true,
-});
+import useChatSocket from "../hooks/useChatSocket";
+import { useState } from "react";
 
 const Chat = () => {
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
-  const [sendingMessage, setSendingMessage] = useState(false);
-  const [editingMessageId, setEditingMessageId] = useState(null);
-  const [editedMessage, setEditedMessage] = useState("");
+  const userId = localStorage.getItem("userId");
+  const role = localStorage.getItem("role");
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("http://localhost:8080/api/auth/users", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error.message);
-      }
-    };
-    fetchUsers();
+  const {
+    users,selectedUser,setSelectedUser,messages,sendMessage, updateMessage, deleteMessage
+  } = useChatSocket(userId);
 
-    if (userId) {
-      socket.emit("registerUser", userId);
-    }
+  const [text, setText] = useState("");
+  const [editMessageId, setEditMessageId] = useState(null);
+  const [editedText, setEditedText] = useState("");
 
-    const receiveMessageHandler = (message) => {
-      if (message.sender === selectedUser || (message.recipients && Array.isArray(message.recipients) && message.recipients.includes(userId))) {
-        setMessages((prevMessages) => [...prevMessages, message]);
-      }
-    };
-    socket.on("messageReceived", receiveMessageHandler);
-
-    return () => {
-      socket.off("messageReceived", receiveMessageHandler);
-    };
-  }, [selectedUser, userId]);
-
-  useEffect(() => {
-    const fetchMessages = async () => {
-      if (!selectedUser) return;
-      try {
-        const response = await axios.get(
-          `http://localhost:8080/api/messages/${userId}/${selectedUser}`,
-          {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          }
-        );
-        setMessages(response.data);
-      } catch (error) {
-        console.error("Error fetching messages:", error.message);
-      }
-    };
-    fetchMessages();
-  }, [selectedUser]);
-
-  const sendMessage = () => {
-    if (sendingMessage || message.trim() === "" || selectedUser === null) {
-      alert("Please select a user and enter a message.");
-      return;
-    }
-
-    setSendingMessage(true);
-
-    const senderId = localStorage.getItem("userId");
-    const senderUsername = localStorage.getItem("username");
-
-    if (!senderId || !senderUsername) {
-      console.error("User ID or username is missing.");
-      setSendingMessage(false);
-      return;
-    }
-
-    const recipientId = selectedUser;
-    if (!recipientId) {
-      console.error("No recipient selected.");
-      setSendingMessage(false);
-      return;
-    }
-
-    const messageData = {
-      text: message.trim(),
-      sender: senderId,
-      senderUsername: senderUsername,
-      recipients: [recipientId],
-      timestamp: new Date(),
-    };
-
-    socket.emit("sendMessage", messageData, (response) => {
-      if (response.status === "ok") {
-        setMessages((prevMessages) => [...prevMessages, { ...messageData }]);
-      } else {
-        console.error("Message failed to send:", response.message || response.error);
-      }
-      setSendingMessage(false);
-    });
-
-    setMessage("");
+  const handleSend = () => {
+    if (!selectedUser || text.trim() === "") return;
+    sendMessage(text, () => setText(""));
   };
-  const updateMessage = async (messageId) => {
-    if (editedMessage.trim() === "") {
-      alert("Message cannot be empty.");
-      return;
-    }
-    try {
-      console.log(`Updating message with ID: ${messageId}`);
-      const response = await axios.put(
-        `http://localhost:8080/api/messages/${messageId}`,
-        { text: editedMessage },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg._id === messageId ? { ...msg, text: editedMessage } : msg
-        )
-      );
-      setEditingMessageId(null);
-      setEditedMessage("");
-      console.log(response.data.message);
-    } catch (error) {
-      console.error("Error updating message:", error.message);
-    }
-  };  
 
-  const deleteMessage = async (messageId) => {
-    try {
-      await axios.delete(`http://localhost:8080/api/messages/${messageId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setMessages((prevMessages) => prevMessages.filter((msg) => msg._id !== messageId));
-    } catch (error) {
-      console.error("Error deleting message:", error.response?.data || error.message);
-    }
-  };  
+  const handleUpdate = (id) => {
+    updateMessage(id, editedText);
+    setEditMessageId(null);
+    setEditedText("");
+  };
 
   return (
-    <div className="chat-container p-4">
-      <h2 className="text-xl font-bold">Chat Room</h2>
-      <div className="user-selection mt-4">
-        <h3>Select a User to Chat With:</h3>
-        {users.map(
-          (user) =>
-            user._id !== userId && (
-              <div key={user._id} className="flex items-center">
-                <input
-                  type="radio"
-                  checked={selectedUser === user._id}
-                  onChange={() => setSelectedUser(user._id)}
-                  className="mr-2"
-                />
-                <span>{user.username}</span>
-              </div>
-            )
-        )}
-      </div>
-      <div className="messages mt-4 border p-2 h-60 overflow-auto">
-        {messages.map((msg) => (
-          <div key={msg._id} className="message mb-2 flex justify-between items-center">
-            {editingMessageId === msg._id ? (
-              <input
-                type="text"
-                value={editedMessage}
-                onChange={(e) => setEditedMessage(e.target.value)}
-                className="border p-1"
-              />
-            ) : (
-              <span>
-                <strong>{msg.senderUsername || "Unknown User"}</strong>: {msg.text}
-              </span>
-            )}
+    <div className="p-6 max-w-3xl mx-auto">
+      <h1 className="text-2xl font-semibold text-blue-600 mb-4">
+        {role === "doctor" ? "Chat with a Patient" : "Chat with a Doctor"}
+      </h1>
 
-            <div className="ml-4">
-              {msg.sender === userId && (
-                <>
-                  {editingMessageId === msg._id ? (
+      <select
+        value={selectedUser || ""}
+        onChange={(e) => setSelectedUser(e.target.value)}
+        className="border p-2 rounded mb-4 w-full"
+      >
+        <option value="">
+          {role === "doctor"
+            ? "-- Select a Patient --"
+            : "-- Select a Doctor --"}
+        </option>
+        {users.map((user) => (
+          <option key={user._id} value={user._id}>
+            {user.username}{" "}
+            {user.specialization ? `(${user.specialization})` : ""}
+          </option>
+        ))}
+      </select>
+
+      <div className="border p-4 h-64 overflow-y-auto bg-gray-50 rounded mb-4">
+        {messages.map((msg) => (
+          <div
+            key={msg._id}
+            className={`mb-2 ${
+              msg.sender === userId ? "text-right" : "text-left"
+            }`}
+          >
+            {editMessageId === msg._id ? (
+              <div>
+                <input
+                  type="text"
+                  value={editedText}
+                  onChange={(e) => setEditedText(e.target.value)}
+                  className="border px-2 py-1 rounded mr-2 w-2/3"
+                />
+                <button
+                  onClick={() => handleUpdate(msg._id)}
+                  className="bg-green-500 text-white px-2 py-1 rounded mr-1"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => {
+                    setEditMessageId(null);
+                    setEditedText("");
+                  }}
+                  className="bg-gray-400 text-white px-2 py-1 rounded"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <div className="inline-block px-3 py-2 rounded bg-blue-100 relative">
+                <span>{msg.text}</span>
+                {msg.sender === userId && (
+                  <span className="text-xs text-gray-600 ml-2">
                     <button
-                      className="bg-green-500 text-white px-2 py-1 rounded mr-2"
-                      onClick={() => updateMessage(msg._id)}
-                    >
-                      Save
-                    </button>
-                  ) : (
-                    <button
-                      className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"
                       onClick={() => {
-                        setEditingMessageId(msg._id);
-                        setEditedMessage(msg.text);
+                        setEditMessageId(msg._id);
+                        setEditedText(msg.text);
                       }}
+                      className="text-blue-600 hover:underline mr-2"
                     >
                       Edit
                     </button>
-                  )}
-                  <button
-                    className="bg-red-500 text-white px-2 py-1 rounded"
-                    onClick={() => deleteMessage(msg._id)}
-                  >
-                    Delete
-                  </button>
-                </>
-              )}
-            </div>
+                    <button
+                      onClick={() => deleteMessage(msg._id)}
+                      className="text-red-600 hover:underline"
+                    >
+                      Delete
+                    </button>
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>
+
       <input
         type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Type your message here..."
-        className="border p-2 mt-2 w-full"
+        placeholder="Type your message..."
+        className="border p-2 rounded w-full mb-2"
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
-      <button className="bg-blue-500 text-white p-2 rounded mt-2" onClick={sendMessage}>
-        {sendingMessage ? "Sending..." : "Send"}
+      <button
+        onClick={handleSend}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Send
       </button>
     </div>
   );
