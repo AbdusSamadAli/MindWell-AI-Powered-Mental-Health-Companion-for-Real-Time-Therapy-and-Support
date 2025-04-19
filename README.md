@@ -6,7 +6,7 @@ Features :
 
 Real-Time Chat Room: Users can join a chat room, send messages, and receive them in real-time without page refreshes.
 
-Collaborative Document Editing: Multiple users can edit a document in real-time. Changes made by one user are instantly reflected for all other users.
+Collaborative Document Editing: Multiple users can edit a document in real-time using quill editor. Changes made by one user are instantly reflected for all other users.
 
 User Authentication: Users can sign up and log in to use the chat room and document editing features securely.
 
