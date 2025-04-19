@@ -1,27 +1,54 @@
-![alt text](./Frontend/public/ss.jpg)
+![alt text](./Frontend/public/imgmindwell.jpg)
+![alt text](./Frontend/public/chat.jpg)
+![alt text](./Frontend/public/chatbot.jpg)
 
-CollabSync: Real-Time Collaboration and Communication Platform
+# 🧠 MindWell
 
-Features :
+MindWell is a modern and secure online health therapy platform designed to support individuals struggling with depression, anxiety, addiction, and more. The platform empowers patients by offering role-based access, personalized therapy booking, real-time communication with doctors, and an integrated AI chatbot powered by **Google Gemini AI**. Doctors and patients can engage via chat and video calls, while doctors can manage notes and appointments seamlessly.
 
-Real-Time Chat Room: Users can join a chat room, send messages, and receive them in real-time without page refreshes.
+---
 
-Collaborative Document Editing: Multiple users can edit a document in real-time using quill editor. Changes made by one user are instantly reflected for all other users.
+## 🚀 Features
 
-User Authentication: Users can sign up and log in to use the chat room and document editing features securely.
+### ✅ Authentication & User Roles
+- 🔐 **Role-Based Authentication** for **Patients** and **Doctors**
+- 🔄 Separate dashboards for patients and doctors with personalized data
 
-Socket.IO Integration: Real-time bi-directional communication between client and server, enabling real-time chat and document updates.
+### 📅 Appointments
+- 🩺 **Patients can book therapy appointments** with available doctors
+- 📬 **Doctors receive real-time email notifications** via **Nodemailer**
+- ✅ Doctors can **confirm appointments** on their dashboard
+- 🕒 **Patients see confirmed appointment time**
 
-Technologies Used:
+### 🤖 AI-Powered Chatbot
+- 💬 Patients can chat with a friendly **AI assistant** powered by **Google Gemini API**
+- 📚 Get therapeutic suggestions and information in real-time
 
-MongoDB: Database for storing user data, messages, and documents.
+### 📞 Real-Time Communication
+- 🗨️ **Live Chat** between patients and doctors using **Socket.IO**
+- 🧠 Notes section for doctors to **take notes** during/after consultation
+- 📹 **Video Call support** using **WebRTC**
 
-Express.js: Backend framework to handle routing and API requests.
+### ⚙️ Scalability & Performance
+- 🔄 Used **Redis** for:
+  - **Caching** chatbot responses
+  - **Scaling real-time chat and sockets**
+- ⚡ Seamless performance even with multiple concurrent users
 
-React.js: Frontend framework to build the user interface.
+### 📧 Email Integration
+- ✅ When a patient books an appointment, an **automated email is sent to the doctor**
+- 📫 Integrated using **Nodemailer**
 
-Node.js: Runtime environment for the backend server.
+---
 
-Socket.IO: For real-time, event-based communication.
+## 🛠️ Tech Stack
 
-JWT (JSON Web Tokens): For user authentication.
+- **Frontend**: React.js, Tailwind CSS
+- **Backend**: Node.js, Express.js
+- **Authentication**: Auth.js / JWT
+- **Real-time Chat**: Socket.IO + Redis
+- **Video Calls**: WebRTC
+- **AI Integration**: Google Gemini API
+- **Email**: Nodemailer
+- **Database**: MongoDB + Redis (for caching)
+
