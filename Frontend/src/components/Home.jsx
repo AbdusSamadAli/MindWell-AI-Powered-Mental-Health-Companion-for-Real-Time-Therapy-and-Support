@@ -26,7 +26,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 bg-transparent">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

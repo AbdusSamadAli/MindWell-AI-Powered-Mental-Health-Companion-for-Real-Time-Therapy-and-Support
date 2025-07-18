@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import Navbar from "./Navbar";
 import FOG from "vanta/dist/vanta.fog.min";
+import * as THREE from "three"; 
 
 const Layout = ({ children }) => {
   const [vantaEffect, setVantaEffect] = useState(null);
@@ -20,18 +21,11 @@ const Layout = ({ children }) => {
           minWidth: 200.0,
           scale: 1.0,
           scaleMobile: 1.0,
-          backgroundColor: 0x2c3e50, 
-          backgroundAlpha: 1.0,
-          color1: 0xc0392b, 
-          color2: 0x2980b9, 
+          backgroundColor: 0x000000, 
+          backgroundAlpha: 1.0,      
+          color1: 0xc0392b,
+          color2: 0x2980b9,
           colorMode: "varianceGradient",
-          birdSize: 1.2,
-          wingSpan: 30,
-          speedLimit: 5,
-          separation: 20,
-          alignment: 20,
-          cohesion: 20,
-          quantity: 5,
         })
       );
     }
@@ -42,21 +36,19 @@ const Layout = ({ children }) => {
   }, [vantaEffect]);
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-white text-gray-900 dark:bg-black dark:text-white">
+    <div className="relative min-h-screen overflow-hidden">
       <Navbar />
-      <main className="flex-grow relative z-10 min-h-screen">
+      <main className="flex-grow relative z-10">
         <div
           ref={vantaRef}
-          className="absolute top-0 left-0 w-full h-full z-[-1]"
-        ></div>
+          className="absolute inset-0 w-full h-full z-[-1]"
+        />
         <div className="container mx-auto py-12 px-6">{children}</div>
       </main>
 
       <footer className="bg-gray-800 text-white py-6">
         <div className="container mx-auto text-center space-y-2">
-          <p className="font-semibold text-lg">
-            MindWell 2025
-          </p>
+          <p className="font-semibold text-lg">MindWell 2025</p>
           <p className="text-sm">All rights reserved.</p>
         </div>
       </footer>
@@ -69,4 +61,3 @@ Layout.propTypes = {
 };
 
 export default Layout;
-
