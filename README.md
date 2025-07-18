@@ -1,6 +1,6 @@
-![Screenshot](/mindwell1.jpg)
+![Screenshot](./Frontend/public//mindwell1.jpg)
 
-![Screenshot](my-app\Frontend\public\chat1.jpg)
+![Screenshot](./Frontend/public/chat1.jpg)
 # 🧠 MindWell
 
 MindWell is a modern and secure online health therapy platform designed to support individuals struggling with depression, anxiety, addiction, and more. The platform empowers patients by offering role-based access, personalized therapy booking, real-time communication with doctors, and an integrated AI chatbot powered by **Google Gemini AI**. Doctors and patients can engage via chat and video calls, while doctors can manage notes and appointments seamlessly.
