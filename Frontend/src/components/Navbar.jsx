@@ -12,9 +12,9 @@ const Navbar = () => {
   const role = localStorage.getItem("role");
 
   return (
-    <nav className="bg-gray-900 p-4 shadow-lg">
-      <div className="container mx-auto flex justify-between items-center">
-        <Link to="/" className="text-white text-2xl font-bold">
+    <nav className="bg-gray-900 py-4 shadow-lg w-full m-0 p-0 fixed top-0 left-0 right-0 z-50">
+      <div className="w-full flex justify-between items-center">
+        <Link to="/" className="text-white text-2xl font-bold ml-4">
           MindWell
         </Link>
         <ul className="flex space-x-6">
@@ -47,7 +47,7 @@ const Navbar = () => {
               <li>
                 <Link
                   to="/login"
-                  className="text-gray-300 hover:text-white hover:underline transition duration-300 ease-in-out"
+                  className="text-gray-300 hover:text-white hover:underline transition duration-300 ease-in-out mr-4"
                 >
                   Login
                 </Link>

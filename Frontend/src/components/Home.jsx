@@ -26,14 +26,14 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen text-white px-4 sm:px-6 lg:px-8 bg-transparent">
+    <div className="min-h-screen text-white bg-transparent mt-5">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="py-16 text-center max-w-4xl mx-auto"
+        className="py-16 text-center max-w-4xl mx-auto m"
       >
-        <h1 className="text-5xl font-bold mb-4">
+        <h1 className="text-5xl font-bold mb-4 mt-4">
           Heal Mindfully with MindWell
         </h1>
         <motion.p
@@ -64,7 +64,7 @@ const Home = () => {
         </motion.p>
       </motion.div>
 
-      <section className="py-16 rounded-lg shadow-md max-w-5xl mx-auto">
+      <section className="py-16 rounded-lg shadow-md max-w-5xl mx-auto mt-2">
         <h2 className="text-4xl font-semibold text-center mb-10">
           Key Features
         </h2>
@@ -138,10 +138,10 @@ const Home = () => {
       </section>
 
       <section className="py-16 max-w-6xl mx-auto">
-        <h2 className="text-4xl font-semibold text-center mb-10">
+        <h2 className="text-4xl font-semibold text-center mb-5">
           How It Works
         </h2>
-        <div className="grid md:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-4 gap-8 mb-10">
           {[
            {
             step: "1. Sign Up",

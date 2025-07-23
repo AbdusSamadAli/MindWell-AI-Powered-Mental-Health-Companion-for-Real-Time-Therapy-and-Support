@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import Navbar from "./Navbar";
 import FOG from "vanta/dist/vanta.fog.min";
-import * as THREE from "three"; 
+import * as THREE from "three";
 
 const Layout = ({ children }) => {
   const [vantaEffect, setVantaEffect] = useState(null);
@@ -21,8 +21,7 @@ const Layout = ({ children }) => {
           minWidth: 200.0,
           scale: 1.0,
           scaleMobile: 1.0,
-          backgroundColor: 0x000000, 
-          backgroundAlpha: 1.0,      
+          backgroundAlpha: 1.0,
           color1: 0xc0392b,
           color2: 0x2980b9,
           colorMode: "varianceGradient",
@@ -36,17 +35,16 @@ const Layout = ({ children }) => {
   }, [vantaEffect]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      <Navbar />
-      <main className="flex-grow relative z-10">
-        <div
-          ref={vantaRef}
-          className="absolute inset-0 w-full h-full z-[-1]"
-        />
-        <div className="container mx-auto py-12 px-6">{children}</div>
-      </main>
+    <div className="relative flex flex-col min-h-screen w-full overflow-x-hidden">
+      <div ref={vantaRef} className="fixed inset-0 -z-10 w-screen h-screen m-0 p-0" />
 
-      <footer className="bg-gray-800 text-white py-6">
+      <header className="w-full">
+        <Navbar />
+      </header>
+
+      <main className="flex-1 w-full">{children}</main>
+
+      <footer className="bg-[#1e293b] text-white py-6 w-screen mt-4">
         <div className="container mx-auto text-center space-y-2">
           <p className="font-semibold text-lg">MindWell 2025</p>
           <p className="text-sm">All rights reserved.</p>
