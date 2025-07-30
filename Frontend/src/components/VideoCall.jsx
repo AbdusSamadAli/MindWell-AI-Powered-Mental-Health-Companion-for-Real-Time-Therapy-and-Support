@@ -9,9 +9,9 @@ const VideoCall = () => {
   const localVideoRef = useRef();
   const remoteVideoRef = useRef();
   const peerConnection = useRef(null);
-  const [remoteUserId, setRemoteUserId] = useState(null);
   const [joined, setJoined] = useState(false);
   const [callStarted, setCallStarted] = useState(false);
+  const [remoteUserId, setRemoteUserId] = useState(null);
 
   const config = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
@@ -24,41 +24,32 @@ const VideoCall = () => {
       await initCamera();
       socket.emit("join-room", { roomId, userId });
 
-      socket.on("user-connected", async ({ userId: remoteId }) => {
-        console.log("User connected:", remoteId);
-        setRemoteUserId(remoteId);
-
-        // Only call if call already started
-        if (callStarted && remoteId) {
-          await createOffer(remoteId);
-        }
+      socket.on("user-connected", async ({ userId: incomingUserId }) => {
+        setRemoteUserId(incomingUserId);
+        if (callStarted) await createOffer(incomingUserId);
       });
 
       socket.on("offer", async ({ offer, from }) => {
-        console.log("Received offer from", from);
-        setRemoteUserId(from);
         await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer));
         const answer = await peerConnection.current.createAnswer();
         await peerConnection.current.setLocalDescription(answer);
-        socket.emit("answer", { answer, to: from, from: userId });
+        socket.emit("answer", { answer, to: from });
       });
 
-      socket.on("answer", async ({ answer, from }) => {
-        console.log("Received answer from", from);
+      socket.on("answer", async ({ answer }) => {
         await peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer));
       });
 
       socket.on("ice-candidate", async ({ candidate }) => {
-        try {
+        if (peerConnection.current) {
           await peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
-        } catch (err) {
-          console.error("Error adding received ice candidate", err);
         }
       });
 
-      socket.on("user-disconnected", ({ userId: disconnectedId }) => {
-        console.log("User disconnected:", disconnectedId);
-        remoteVideoRef.current.srcObject = null;
+      socket.on("user-disconnected", () => {
+        if (remoteVideoRef.current) {
+          remoteVideoRef.current.srcObject = null;
+        }
       });
 
       setJoined(true);
@@ -68,10 +59,6 @@ const VideoCall = () => {
 
     return () => {
       socket.disconnect();
-      if (peerConnection.current) {
-        peerConnection.current.close();
-        peerConnection.current = null;
-      }
     };
   }, [roomId, userId, callStarted]);
 
@@ -92,52 +79,41 @@ const VideoCall = () => {
 
       peerConnection.current.onicecandidate = (event) => {
         if (event.candidate) {
-          socket.emit("ice-candidate", {
-            candidate: event.candidate,
-            to: remoteUserId,
-            from: userId,
-          });
+          socket.emit("ice-candidate", { candidate: event.candidate, roomId });
         }
       };
-    } catch (err) {
-      alert("Could not access your camera or microphone.");
-      console.error(err);
+    } catch (error) {
+      alert("Could not access camera. Please allow permission or close other tabs using the webcam.");
     }
   };
 
   const createOffer = async (toUserId) => {
     const offer = await peerConnection.current.createOffer();
     await peerConnection.current.setLocalDescription(offer);
-    socket.emit("offer", { offer, to: toUserId, from: userId });
+    socket.emit("offer", { offer, to: toUserId });
   };
 
   const startCall = async () => {
     setCallStarted(true);
-    if (remoteUserId) {
-      await createOffer(remoteUserId);
-    }
+    if (remoteUserId) await createOffer(remoteUserId);
+    socket.emit("start-call", { roomId, userId });
   };
 
   const endCall = () => {
-    setCallStarted(false);
     socket.emit("end-call", { roomId, userId });
-
-    if (peerConnection.current) {
-      peerConnection.current.close();
-      peerConnection.current = null;
+    setCallStarted(false);
+    if (peerConnection.current) peerConnection.current.close();
+    if (localVideoRef.current?.srcObject) {
+      localVideoRef.current.srcObject.getTracks().forEach(track => track.stop());
     }
-
-    const tracks = localVideoRef.current?.srcObject?.getTracks();
-    tracks?.forEach(track => track.stop());
-
-    localVideoRef.current.srcObject = null;
-    remoteVideoRef.current.srcObject = null;
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = null;
+    }
   };
 
   return (
     <div className="flex flex-col items-center gap-6 p-6 bg-gray-100 rounded-xl shadow-md">
       <h2 className="text-2xl font-semibold text-gray-800">Video Call Room: {roomId}</h2>
-
       <div className="flex gap-6 mt-6">
         <div>
           <p className="text-center text-lg font-medium">You</p>
@@ -148,9 +124,7 @@ const VideoCall = () => {
           <video ref={remoteVideoRef} autoPlay playsInline className="rounded-lg w-80 h-60 bg-black" />
         </div>
       </div>
-
       {!joined && <p className="text-sm text-gray-500">Joining room...</p>}
-
       <div className="flex gap-4 mt-6">
         {!callStarted ? (
           <button
