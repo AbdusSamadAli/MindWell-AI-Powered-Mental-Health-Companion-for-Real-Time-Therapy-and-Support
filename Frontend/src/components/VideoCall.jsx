@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
-import { useParams } from "react-router-dom"; 
+import { useParams } from "react-router-dom";
 
 const socket = io("http://localhost:8080");
 
@@ -9,11 +9,12 @@ const VideoCall = () => {
   const localVideoRef = useRef();
   const remoteVideoRef = useRef();
   const peerConnection = useRef(null);
+  const [remoteUserId, setRemoteUserId] = useState(null);
   const [joined, setJoined] = useState(false);
-  const [callStarted, setCallStarted] = useState(false); 
+  const [callStarted, setCallStarted] = useState(false);
 
   const config = {
-    iceServers: [{ urls: "stun:stun.l.google.com:19302" }], 
+    iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
   };
 
   useEffect(() => {
@@ -21,32 +22,42 @@ const VideoCall = () => {
 
     const init = async () => {
       await initCamera();
-
       socket.emit("join-room", { roomId, userId });
 
-      socket.on("user-connected", async ({ userId: remoteUserId }) => {
-        console.log("User connected:", remoteUserId);
-        if (callStarted) await createOffer(remoteUserId); 
+      socket.on("user-connected", async ({ userId: remoteId }) => {
+        console.log("User connected:", remoteId);
+        setRemoteUserId(remoteId);
+
+        // Only call if call already started
+        if (callStarted && remoteId) {
+          await createOffer(remoteId);
+        }
       });
 
       socket.on("offer", async ({ offer, from }) => {
+        console.log("Received offer from", from);
+        setRemoteUserId(from);
         await peerConnection.current.setRemoteDescription(new RTCSessionDescription(offer));
         const answer = await peerConnection.current.createAnswer();
         await peerConnection.current.setLocalDescription(answer);
-        socket.emit("answer", { answer, to: from });
+        socket.emit("answer", { answer, to: from, from: userId });
       });
 
-      socket.on("answer", async ({ answer }) => {
+      socket.on("answer", async ({ answer, from }) => {
+        console.log("Received answer from", from);
         await peerConnection.current.setRemoteDescription(new RTCSessionDescription(answer));
       });
 
       socket.on("ice-candidate", async ({ candidate }) => {
-        if (peerConnection.current) {
+        try {
           await peerConnection.current.addIceCandidate(new RTCIceCandidate(candidate));
+        } catch (err) {
+          console.error("Error adding received ice candidate", err);
         }
       });
 
-      socket.on("user-disconnected", () => {
+      socket.on("user-disconnected", ({ userId: disconnectedId }) => {
+        console.log("User disconnected:", disconnectedId);
         remoteVideoRef.current.srcObject = null;
       });
 
@@ -57,8 +68,12 @@ const VideoCall = () => {
 
     return () => {
       socket.disconnect();
+      if (peerConnection.current) {
+        peerConnection.current.close();
+        peerConnection.current = null;
+      }
     };
-  }, [roomId, userId, callStarted]); 
+  }, [roomId, userId, callStarted]);
 
   const initCamera = async () => {
     try {
@@ -77,32 +92,46 @@ const VideoCall = () => {
 
       peerConnection.current.onicecandidate = (event) => {
         if (event.candidate) {
-          socket.emit("ice-candidate", { candidate: event.candidate, roomId });
+          socket.emit("ice-candidate", {
+            candidate: event.candidate,
+            to: remoteUserId,
+            from: userId,
+          });
         }
       };
-    } catch (error) {
-      console.error("Camera access denied or unavailable:", error);
-      alert("Could not access camera. Please allow permission or close other tabs using the webcam.");
+    } catch (err) {
+      alert("Could not access your camera or microphone.");
+      console.error(err);
     }
   };
 
   const createOffer = async (toUserId) => {
     const offer = await peerConnection.current.createOffer();
     await peerConnection.current.setLocalDescription(offer);
-    socket.emit("offer", { offer, to: toUserId });
+    socket.emit("offer", { offer, to: toUserId, from: userId });
   };
 
-  const startCall = () => {
+  const startCall = async () => {
     setCallStarted(true);
-    socket.emit("start-call", { roomId, userId });
+    if (remoteUserId) {
+      await createOffer(remoteUserId);
+    }
   };
 
   const endCall = () => {
-    socket.emit("end-call", { roomId, userId });
     setCallStarted(false);
-    peerConnection.current.close(); 
-    localVideoRef.current.srcObject.getTracks().forEach(track => track.stop()); 
-    remoteVideoRef.current.srcObject = null; 
+    socket.emit("end-call", { roomId, userId });
+
+    if (peerConnection.current) {
+      peerConnection.current.close();
+      peerConnection.current = null;
+    }
+
+    const tracks = localVideoRef.current?.srcObject?.getTracks();
+    tracks?.forEach(track => track.stop());
+
+    localVideoRef.current.srcObject = null;
+    remoteVideoRef.current.srcObject = null;
   };
 
   return (
