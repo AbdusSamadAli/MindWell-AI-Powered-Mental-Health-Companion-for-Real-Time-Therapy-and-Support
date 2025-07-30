@@ -28,12 +28,13 @@ const VideoCallLobby = () => {
         );
         setUsers(res.data);
       } catch (err) {
-        console.error("❌ Failed to fetch users:", err);
+        console.error("Failed to fetch users:", err);
       }
     };
 
     fetchUsers();
   }, []);
+
   const handleStartCall = () => {
     if (!selectedUserId || !currentUserId) {
       alert("Please select a user to start the video call.");
@@ -50,7 +51,6 @@ const VideoCallLobby = () => {
       <h2 className="text-xl font-semibold mb-4 text-indigo-700">
         {role === "doctor" ? "Select a Patient" : "Select a Doctor"}
       </h2>
-
       <select
         value={selectedUserId}
         onChange={(e) => setSelectedUserId(e.target.value)}
@@ -65,7 +65,6 @@ const VideoCallLobby = () => {
           </option>
         ))}
       </select>
-
       <button
         onClick={handleStartCall}
         className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
