@@ -39,7 +39,9 @@ app.use("/api/ai", aiRoute);
 const pubClient = createClient({ host: "127.0.0.1", port: 6379 });
 const subClient = pubClient.duplicate();
 io.adapter(createAdapter(pubClient, subClient));
-const userSocketMap = {};
+
+const userSocketMap = {};     
+const roomUsers = {};         
 
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
@@ -47,6 +49,7 @@ io.on("connection", (socket) => {
     userSocketMap[userId] = socket.id;
     console.log(`User ${userId} registered with socket ${socket.id}`);
   });
+  
   socket.on("sendMessage", async (message, callback) => {
     console.log("Received message:", message);
     if (!message.sender || !message.recipients || !message.text) {
@@ -56,40 +59,45 @@ io.on("connection", (socket) => {
     callback({ status: "ok" });
   });
 
-  const roomUsers = {};
-  io.on("connection", (socket) => {
-    console.log("User connected:", socket.id);
-    socket.on("join-room", (roomId, userId) => {
-      socket.join(roomId);
-      roomUsers[socket.id] = { roomId, userId };
-      socket.to(roomId).emit("user-connected", userId);
-      socket.on("disconnect", () => {
-        const { roomId, userId } = roomUsers[socket.id] || {};
-        if (roomId && userId) {
-          socket.to(roomId).emit("user-disconnected", userId);
-        }
-        delete roomUsers[socket.id];
-      });
-    });
-  
-    socket.on("offer", (data) => {
-      const { roomId } = roomUsers[socket.id] || {};
-      if (roomId) socket.to(roomId).emit("offer", data);
-    });
-  
-    socket.on("answer", (data) => {
-      const { roomId } = roomUsers[socket.id] || {};
-      if (roomId) socket.to(roomId).emit("answer", data);
-    });
-  
-    socket.on("ice-candidate", (data) => {
-      const { roomId } = roomUsers[socket.id] || {};
-      if (roomId) socket.to(roomId).emit("ice-candidate", data);
-    });
-  });  
+  socket.on("join-room", ({ roomId, userId }) => {
+    socket.join(roomId);
+    roomUsers[socket.id] = { roomId, userId };
+    socket.to(roomId).emit("user-connected", { userId });
+    console.log(`User ${userId} joined room ${roomId}`);
+  });
+
+  socket.on("offer", (data) => {
+    const { roomId } = roomUsers[socket.id] || {};
+    if (roomId) {
+      socket.to(roomId).emit("offer", { ...data, from: roomUsers[socket.id].userId });
+    }
+  });
+
+  socket.on("answer", (data) => {
+    const { roomId } = roomUsers[socket.id] || {};
+    if (roomId) {
+      socket.to(roomId).emit("answer", data);
+    }
+  });
+
+  socket.on("ice-candidate", (data) => {
+    const { roomId } = roomUsers[socket.id] || {};
+    if (roomId) {
+      socket.to(roomId).emit("ice-candidate", data);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    const { roomId, userId } = roomUsers[socket.id] || {};
+    if (roomId && userId) {
+      socket.to(roomId).emit("user-disconnected", { userId });
+      delete roomUsers[socket.id];
+    }
+    console.log("User disconnected:", socket.id);
+  });
 });
-const PORT = process.env.PORT;
+
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT} with Redis adapter`);
 });
-
