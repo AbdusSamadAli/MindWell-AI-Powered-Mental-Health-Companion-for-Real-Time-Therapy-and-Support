@@ -28,24 +28,28 @@ const Layout = ({ children }) => {
         })
       );
     }
-
     return () => {
       if (vantaEffect) vantaEffect.destroy();
     };
   }, [vantaEffect]);
 
   return (
-    <div className="relative flex flex-col min-h-screen w-full overflow-x-hidden">
-      <div ref={vantaRef} className="fixed inset-0 -z-10 w-screen h-screen m-0 p-0" />
+    <div className="relative flex flex-col min-h-screen w-full overflow-x-hidden m-0 p-0">
+      <div
+        ref={vantaRef}
+        className="fixed inset-0 -z-10 w-full h-full m-0 p-0 box-border"
+      />
 
-      <header className="w-full">
+      <header className="w-full m-0 p-0">
         <Navbar />
       </header>
 
-      <main className="flex-1 w-full">{children}</main>
+      <main className="flex-1 w-full m-0 p-0">
+        <div className="w-full">{children}</div>
+      </main>
 
-      <footer className="bg-[#1e293b] text-white py-6 w-screen mt-4">
-        <div className="container mx-auto text-center space-y-2">
+      <footer className="bg-[#1e293b] text-white py-6 w-full m-0 p-0">
+        <div className="text-center space-y-2">
           <p className="font-semibold text-lg">MindWell 2025</p>
           <p className="text-sm">All rights reserved.</p>
         </div>

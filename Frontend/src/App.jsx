@@ -1,19 +1,16 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Signup from "./components/signup";
-import Login from "./components/login";
-import Chat from "./components/chat";
-import Home from "./components/Home";
-import DoctorDashboard from "./components/DoctorDashboard";
-import PatientDashboard from "./components/PatientDashboard";
+import Signup from "./pages/signup";
+import Login from "./pages/login";
+import Chat from "./pages/chat";
+import Home from "./pages/Home";
+import DoctorDashboard from "./pages/DoctorDashboard";
+import PatientDashboard from "./pages/PatientDashboard";
 import BookAppointment from "./components/BookAppointment";
-import GeminiTherapySuggestions from "./components/GeminiTherapySuggestions";
-import AppointmentList from "./components/AppointmentList";
-import DashboardSummary from "./components/DashboardSummary";
-import DoctorNotes from "./components/DoctorNotes";
+import GeminiTherapySuggestions from "./pages/GeminiTherapySuggestions";
 import Layout from "./components/Layout";
 import VideoCall from "./components/VideoCall";
-import VideoCallLobby from "./components/VideoCallLobby";
+import VideoCallLobby from "./pages/VideoCallLobby";
 
 const App = () => {
   return (
@@ -29,11 +26,8 @@ const App = () => {
             <Route path="/patientdashboard" element={<PatientDashboard />} />
             <Route path="/bookappointment" element={<BookAppointment />} />
             <Route path="/gemini" element={<GeminiTherapySuggestions />} />
-            <Route path="/list" element={<AppointmentList />} />
-            <Route path="/summary" element={<DashboardSummary />} />
-            <Route path="/notes" element={<DoctorNotes />} />
-            <Route path="/videocall" element={<VideoCallLobby />} /> 
-            <Route path="/video-call/:roomId/:userId" element={<VideoCall />} /> 
+            <Route path="/videocall" element={<VideoCallLobby />} />
+            <Route path="/video-call/:roomId/:userId" element={<VideoCall />} />
           </Routes>
         </Layout>
       </div>
